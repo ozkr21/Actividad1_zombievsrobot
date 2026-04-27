@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { simulateBattle } from "@/lib/battle";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   const { character1Id, character2Id } = await req.json();
 
