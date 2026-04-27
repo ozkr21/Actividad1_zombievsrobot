@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Character {
+  id       Int    @id @default(autoincrement())
+  name     String
+  type     String // "zombie" | "robot"
+  health   Int
+  attack   Int
+  defense  Int
+  speed    Int
+
+  battlesAsC1 Battle[] @relation("Character1")
+  battlesAsC2 Battle[] @relation("Character2")
+  wins        Battle[] @relation("Winner")
+}
+
+model Battle {
+  id           Int       @id @default(autoincrement())
+  character1   Character @relation("Character1", fields: [character1Id], references: [id])
+  character1Id Int
+  character2   Character @relation("Character2", fields: [character2Id], references: [id])
+  character2Id Int
+  winner       Character @relation("Winner", fields: [winnerId], references: [id])
+  winnerId     Int
+  turns        Int
+  createdAt    DateTime  @default(now())
+}
